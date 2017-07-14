@@ -14,8 +14,7 @@ import org.apache.camel.spring.boot.CamelSpringBootApplicationController
 class MyConfig {
 }
 
-object Main {
-  
+object Main { 
   def main(args: Array[String]): Unit = {
     new SpringApplicationBuilder(classOf[MyConfig])
       .web(false)
