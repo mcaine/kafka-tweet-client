@@ -30,10 +30,11 @@ class MyRouteBuilder(override val context : CamelContext) extends ScalaRouteBuil
   "kafka:MikesTweets?brokers=localhost:9092&groupId=myGroup&consumersCount=2&maxPollRecords=10000&seekTo=beginning" ==> {
      process {
        e: Exchange => {
-         val tweet:Tweet = e.getIn.getBody(classOf[Tweet])
+         val tweet = e.getIn.getBody(classOf[Tweet])
          println
          println("---------------------------------")
          println(s"${tweet.user.screen_name}: ${tweet.text}")
+         for (place <- tweet.place) println(s"Place: ${place}")
          println("---------------------------------")
        }
      }
