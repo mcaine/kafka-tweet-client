@@ -5,7 +5,7 @@ case class Tweet(
 	coordinates: Option[Coordinates],
 	created_at: String,
 	current_user_retweet: Option[Map[String, String]],
-	entities: Entities,
+	//entities: Entities,
 	favorite_count: Option[Int],
 	favorited: Option[Boolean],
 	filter_level: String,

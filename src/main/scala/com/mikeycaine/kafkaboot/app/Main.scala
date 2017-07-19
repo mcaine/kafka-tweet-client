@@ -20,7 +20,7 @@ object Main {
       .web(false)
       .run()
       .getBean(classOf[CamelSpringBootApplicationController])
-      .blockMainThread
+      .run()
     }
 }
 

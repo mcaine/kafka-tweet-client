@@ -23,6 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<camel.version>2.19.1</camel.version>
+		<json4s.version>3.5.2</json4s.version>
 	</properties>
 
 	<dependencyManagement>
@@ -48,8 +49,8 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-scala</artifactId>
 		</dependency>
- 
- 		<dependency>
+
+		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jackson</artifactId>
 		</dependency>
@@ -69,7 +70,6 @@
 			<artifactId>scala-library</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.scala-lang.modules</groupId>
 			<artifactId>scala-xml_2.11</artifactId>
@@ -81,7 +81,19 @@
 			<artifactId>camel-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.json4s</groupId>
+			<artifactId>json4s-jackson_2.11</artifactId>
+			<version>${json4s.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json4s</groupId>
+			<artifactId>json4s-native_2.11</artifactId>
+			<version>${json4s.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -110,6 +122,14 @@
 		<plugins>
 
 			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.mikeycaine.kafkaboot.app.Main</mainClass>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.3</version>
@@ -130,7 +150,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
