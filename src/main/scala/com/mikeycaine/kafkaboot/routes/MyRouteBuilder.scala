@@ -4,6 +4,7 @@ import org.apache.camel.CamelContext
 import org.apache.camel.Exchange
 import org.apache.camel.scala.dsl.builder.ScalaRouteBuilder
 import org.apache.camel.support.TypeConverterSupport
+import org.apache.camel.TypeConversionException
 
 import org.json4s.DefaultFormats
 import org.json4s.Extraction
@@ -27,18 +28,21 @@ class MyRouteBuilder(override val context : CamelContext) extends ScalaRouteBuil
   
   context.getTypeConverterRegistry.addTypeConverter(classOf[Tweet], classOf[String], new CaseClassTypeConverter)
   
-  "kafka:MikesTweets?brokers=localhost:9092&groupId=myGroup&consumersCount=2&maxPollRecords=10000&seekTo=beginning" ==> {
-     process {
-       e: Exchange => {
-         val tweet = e.getIn.getBody(classOf[Tweet])
-         println
-         println("---------------------------------")
-         println(s"${tweet.user.screen_name}: ${tweet.text}")
-         for (place <- tweet.place) println(s"Place: ${place}")
-         println("---------------------------------")
-       }
-     }
-  }
+  //"kafka:MikesTweets?brokers=localhost:9092&groupId=myGroup&consumersCount=1&maxPollRecords=10000&seekTo=beginning"
+  "kafka:MikesTweets?brokers=localhost:9092&groupId=myGroup&consumersCount=1&maxPollRecords=10000&seekTo=end"
+  .process( e => {
+    try {
+      val tweet = e.getIn.getBody(classOf[Tweet])
+      println
+      println("---------------------------------")
+      println(s"${tweet.user.screen_name}: ${tweet.text}")
+      for (place <- tweet.place) println(s"Place: ${place}")
+      println("---------------------------------")
+      e.getIn.setBody(tweet)
+    } catch {
+      case (tce: TypeConversionException) => e.setProperty(Exchange.ROUTE_STOP, true);  
+    }
+   }) //--> "log:bollox"
 }
 
 
